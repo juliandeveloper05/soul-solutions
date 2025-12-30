@@ -65,6 +65,8 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 body {
@@ -72,6 +74,14 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-primary);
     line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Prevent horizontal scroll */
+body, html {
+    max-width: 100%;
     overflow-x: hidden;
 }
 
@@ -208,6 +218,8 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     cursor: pointer;
     padding: 5px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 .mobile-menu span {
@@ -261,6 +273,39 @@ h1, h2, h3, h4, h5, h6 {
     bottom: -100px;
     left: -100px;
     animation-delay: -10s;
+}
+
+/* Reduce orb size on mobile to prevent overflow */
+@media (max-width: 768px) {
+    .gradient-orb-1 {
+        width: 400px;
+        height: 400px;
+        top: -150px;
+        right: -150px;
+    }
+    
+    .gradient-orb-2 {
+        width: 300px;
+        height: 300px;
+        bottom: -100px;
+        left: -100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gradient-orb-1 {
+        width: 300px;
+        height: 300px;
+        top: -100px;
+        right: -100px;
+    }
+    
+    .gradient-orb-2 {
+        width: 250px;
+        height: 250px;
+        bottom: -80px;
+        left: -80px;
+    }
 }
 
 @keyframes float {
@@ -356,6 +401,10 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     border: none;
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .btn-primary {
@@ -833,6 +882,15 @@ h1, h2, h3, h4, h5, h6 {
     transition: var(--transition-fast);
 }
 
+/* Prevent zoom on iOS when focusing inputs */
+@media (max-width: 768px) {
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px; /* iOS won't zoom if font-size is 16px or larger */
+    }
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -935,7 +993,17 @@ h1, h2, h3, h4, h5, h6 {
 /* ========================================
    Responsive Design
 ======================================== */
+
+/* Tablet Landscape */
 @media (max-width: 1024px) {
+    :root {
+        --section-padding: 100px;
+    }
+    
+    .container {
+        padding: 0 32px;
+    }
+    
     .tech-columns {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -966,11 +1034,25 @@ h1, h2, h3, h4, h5, h6 {
     .contact-links {
         justify-content: center;
     }
+    
+    .methodology-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
+/* Tablet Portrait */
 @media (max-width: 768px) {
     :root {
         --section-padding: 80px;
+    }
+    
+    .container {
+        padding: 0 24px;
+    }
+    
+    /* Navigation */
+    .nav-container {
+        padding: 0 20px;
     }
     
     .nav-links {
@@ -985,6 +1067,7 @@ h1, h2, h3, h4, h5, h6 {
         padding: 20px;
         gap: 0;
         border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow-lg);
     }
     
     .nav-links.active {
@@ -1014,49 +1097,486 @@ h1, h2, h3, h4, h5, h6 {
         display: flex;
     }
     
+    /* Hero */
+    .hero {
+        min-height: auto;
+        padding: 100px 20px 80px;
+    }
+    
+    .hero-badge {
+        font-size: 0.8125rem;
+        padding: 8px 16px;
+    }
+    
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 32px;
+    }
+    
+    .hero-ctas {
+        margin-bottom: 50px;
+    }
+    
     .hero-stats {
-        gap: 30px;
+        gap: 40px;
     }
     
     .stat-number {
         font-size: 2rem;
     }
     
+    .stat-label {
+        font-size: 0.8125rem;
+    }
+    
+    /* Services */
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .service-card {
+        padding: 28px;
+    }
+    
+    /* Technologies */
+    .tech-column {
+        padding: 32px 24px;
+    }
+    
     .tech-badges {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .tech-badge {
+        padding: 14px;
+    }
+    
+    /* Methodology */
+    .methodology-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .method-card {
+        padding: 28px;
+    }
+    
+    .method-number {
+        font-size: 2.5rem;
+    }
+    
+    /* Contact */
+    .contact-form {
+        padding: 28px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 50px 0 25px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+    
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .footer-brand p {
+        max-width: 100%;
+        text-align: center;
+    }
+    
+    .footer-links {
+        gap: 24px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    :root {
+        --section-padding: 60px;
+    }
+    
+    .container {
+        padding: 0 16px;
+    }
+    
+    /* Navigation */
+    .nav-container {
+        padding: 0 16px;
+    }
+    
+    .logo {
+        font-size: 1.125rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.25rem;
+    }
+    
+    /* Hero */
+    .hero {
+        padding: 90px 16px 60px;
+    }
+    
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        gap: 6px;
+    }
+    
+    .pulse {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .hero-title {
+        font-size: clamp(1.75rem, 10vw, 2.5rem);
+        margin-bottom: 20px;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9375rem;
+        margin-bottom: 28px;
+    }
+    
+    .hero-ctas {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 40px;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+        font-size: 0.9375rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .stat-number {
+        font-size: 1.75rem;
+    }
+    
+    /* Section Headers */
+    .section-header {
+        margin-bottom: 40px;
+    }
+    
+    .section-tag {
+        padding: 6px 14px;
+        font-size: 0.8125rem;
+        margin-bottom: 16px;
+    }
+    
+    .section-title {
+        font-size: clamp(1.75rem, 8vw, 2.5rem);
+        margin-bottom: 12px;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Services */
+    .services-grid {
+        gap: 16px;
+    }
+    
+    .service-card {
+        padding: 24px;
+    }
+    
+    .service-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 20px;
+    }
+    
+    .service-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .service-card h3 {
+        font-size: 1.125rem;
+    }
+    
+    .service-card p {
+        font-size: 0.875rem;
+    }
+    
+    .service-features li {
+        font-size: 0.8125rem;
+        padding: 6px 0 6px 20px;
+    }
+    
+    .featured-badge {
+        top: 12px;
+        right: 12px;
+        padding: 4px 10px;
+    }
+    
+    /* Technologies */
+    .tech-column {
+        padding: 28px 20px;
+    }
+    
+    .tech-icon-large {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+    }
+    
+    .tech-icon-large svg {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .tech-header h3 {
+        font-size: 1.25rem;
+    }
+    
+    .tech-header p {
+        font-size: 0.875rem;
+    }
+    
+    .tech-badge {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .tech-badge-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 0.8125rem;
+        flex-shrink: 0;
+    }
+    
+    .tech-badge-info strong {
+        font-size: 0.875rem;
+    }
+    
+    .tech-badge-info span {
+        font-size: 0.75rem;
+    }
+    
+    .divider-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .divider-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Methodology */
+    .methodology-grid {
+        gap: 16px;
+    }
+    
+    .method-card {
+        padding: 24px;
+    }
+    
+    .method-number {
+        font-size: 2rem;
+    }
+    
+    .method-content h3 {
+        font-size: 1.125rem;
+    }
+    
+    .method-content p {
+        font-size: 0.875rem;
+    }
+    
+    .method-icon {
+        width: 40px;
+        height: 40px;
+        top: 20px;
+        right: 20px;
+    }
+    
+    .method-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Contact */
+    .contact-wrapper {
+        gap: 32px;
+    }
+    
+    .contact-description {
+        font-size: 1rem;
+        margin-bottom: 24px;
+    }
+    
+    .contact-links {
+        gap: 12px;
+    }
+    
+    .contact-link {
+        padding: 10px 16px;
+        font-size: 0.875rem;
+    }
+    
+    .contact-link svg {
+        width: 18px;
+        height: 18px;
     }
     
     .contact-form {
         padding: 24px;
     }
     
+    .form-group {
+        margin-bottom: 18px;
+    }
+    
+    .form-group label {
+        font-size: 0.875rem;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 12px 16px;
+        font-size: 0.9375rem;
+    }
+    
+    .form-group textarea {
+        min-height: 100px;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 40px 0 20px;
+    }
+    
     .footer-content {
-        flex-direction: column;
-        text-align: center;
+        margin-bottom: 30px;
     }
     
     .footer-brand p {
-        max-width: 100%;
+        font-size: 0.875rem;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+    }
+    
+    .footer-links a {
+        font-size: 0.875rem;
+    }
+    
+    .footer-bottom {
+        padding-top: 20px;
+    }
+    
+    .footer-bottom p {
+        font-size: 0.8125rem;
     }
 }
 
-@media (max-width: 480px) {
-    .hero-ctas {
-        flex-direction: column;
+/* Extra Small Devices */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: 1.5rem;
     }
     
-    .btn {
-        width: 100%;
-        justify-content: center;
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .service-card,
+    .method-card,
+    .tech-column {
+        padding: 20px;
+    }
+    
+    .contact-form {
+        padding: 20px;
+    }
+}
+
+/* Safe Area for devices with notch (iPhone X+) */
+@supports (padding: max(0px)) {
+    .container {
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+    }
+    
+    .nav-container {
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+    }
+    
+    .hero {
+        padding-left: max(24px, env(safe-area-inset-left));
+        padding-right: max(24px, env(safe-area-inset-right));
+    }
+    
+    @media (max-width: 768px) {
+        .container {
+            padding-left: max(20px, env(safe-area-inset-left));
+            padding-right: max(20px, env(safe-area-inset-right));
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .container {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+        }
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 80px 20px 60px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
     }
     
     .hero-stats {
-        flex-direction: column;
-        gap: 20px;
+        flex-direction: row;
+        gap: 30px;
     }
     
-    .services-grid,
-    .methodology-grid {
-        grid-template-columns: 1fr;
+    :root {
+        --section-padding: 60px;
     }
 }
