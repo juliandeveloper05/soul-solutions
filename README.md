@@ -37,6 +37,7 @@ Landing page que presenta servicios de consultoría especializados en la transfo
 | Tecnología | Uso |
 |------------|-----|
 | Three.js | 3D Interactive Background |
+| GSAP 3.12 | Core & ScrollTrigger Animations |
 | Next.js | React Framework |
 | Node.js | Backend Runtime |
 | TypeScript | Type Safety |
@@ -47,15 +48,15 @@ Landing page que presenta servicios de consultoría especializados en la transfo
 - Cross-Functional Collaboration
 - Stakeholder Engagement
 
-## 🎨 Características v2.0
+## 🎨 Características v3.0
 
 - ✅ **Inmersive 3D Experience**: Fondo dinámico con partículas y geometrías 3D usando Three.js.
-- ✅ **Optimized Architecture**: Estructura modular `ProjectCore` para una mejor mantenibilidad.
-- ✅ **Enhanced UI Legibility**: Mejoras en el contraste del navbar y posicionamiento estratégico de elementos 3D para evitar solapamientos visuales.
-- ✅ **Premium Glassmorphism**: Estilos CSS refinados con efectos de transparencia y desenfoque avanzados, optimizados para legibilidad.
-- ✅ **High Performance**: Loop de renderizado optimizado y gestión de recursos (GPU/CPU).
-- ✅ **Interactive Elements**: Efectos de **3D Tilt** en tarjetas y animaciones por scroll.
-- ✅ **Senior-Level SEO**: Metadatos modernos y tiempos de carga optimizados.
+- ✅ **Professional SVG Branding**: Identidad visual renovada con iconografía SVG y efectos de brillo premium.
+- ✅ **GSAP Animations**: Transiciones fluidas y animaciones 3D (Y-axis rotation) en elementos clave.
+- ✅ **ScrollTrigger Interaction**: Animaciones sincronizadas con el scroll para una navegación narrativa.
+- ✅ **Optimized Architecture**: Estructura modular `ProjectCore` con manejo de estados y limpiezas de memoria.
+- ✅ **Performance & Stability**: Uso de unidades `svh` para estabilidad en móviles y optimización de renderizado.
+- ✅ **Advanced Glassmorphism**: Efectos de transparencia y desenfoque optimizados para rendimiento GPU.
 
 ## 📁 Estructura
 
