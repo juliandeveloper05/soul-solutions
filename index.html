@@ -73,13 +73,29 @@
                 <li><a href="#methodology" class="nav-link">Metodología</a></li>
                 <li><a href="#contact" class="nav-cta">Contactar</a></li>
             </ul>
-            <button class="mobile-menu" aria-label="Menu">
+            <button class="mobile-menu" aria-label="Menu" id="mobileMenuBtn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
     </nav>
+
+    <!-- Fullscreen 3D Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <canvas id="menuCanvas"></canvas>
+        <div class="menu-content">
+            <nav class="menu-nav">
+                <a href="#services" class="menu-link" data-index="01">Servicios</a>
+                <a href="#technologies" class="menu-link" data-index="02">Stack</a>
+                <a href="#methodology" class="menu-link" data-index="03">Metodología</a>
+                <a href="#contact" class="menu-link" data-index="04">Contactar</a>
+            </nav>
+            <div class="menu-footer">
+                <p>Soul Solutions &copy; 2026</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section with 3D Background -->
     <section id="hero" class="hero">

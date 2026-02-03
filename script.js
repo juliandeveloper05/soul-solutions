@@ -6,6 +6,7 @@
 const ProjectCore = {
     init() {
         this.init3DHero();
+        this.init3DMenu();
         this.initNavbar();
         this.initMobileMenu();
         this.initScrollAnimations();
@@ -122,49 +123,113 @@ function initNavbar() {
 }
 
 // ========================================
-// Mobile Menu Toggle
+// Mobile Menu Toggle with 3D Interaction
 // ========================================
 function initMobileMenu() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const menuOverlay = document.getElementById('mobileMenuOverlay');
+    const menuLinks = document.querySelectorAll('.menu-link');
 
-    if (!mobileMenuBtn || !navLinks) return;
+    if (!mobileMenuBtn || !menuOverlay) return;
 
-    const closeMobileMenu = () => {
-        navLinks.classList.remove('active');
-        mobileMenuBtn.classList.remove('active');
-        const spans = mobileMenuBtn.querySelectorAll('span');
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
+    let menuSceneStarted = false;
+
+    const toggleMenu = () => {
+        const isActive = menuOverlay.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+        
+        document.body.style.overflow = isActive ? 'hidden' : '';
+
+        if (isActive) {
+            if (!menuSceneStarted) {
+                init3DMenu();
+                menuSceneStarted = true;
+            }
+            // Stagger link animation
+            menuLinks.forEach((link, i) => {
+                link.style.transitionDelay = `${0.1 + i * 0.1}s`;
+            });
+        }
     };
 
-    mobileMenuBtn.addEventListener('click', () => {
-        const isActive = navLinks.classList.toggle('active');
-        mobileMenuBtn.classList.toggle('active');
+    mobileMenuBtn.addEventListener('click', toggleMenu);
 
-        const spans = mobileMenuBtn.querySelectorAll('span');
-        if (isActive) {
-            spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
-        } else {
-            closeMobileMenu();
-        }
+    menuLinks.forEach(link => {
+        link.addEventListener('click', toggleMenu);
     });
+}
 
-    // Close on link click
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMobileMenu);
-    });
+// ========================================
+// Three.js 3D Mobile Menu Background
+// ========================================
+function init3DMenu() {
+    const canvas = document.getElementById('menuCanvas');
+    if (!canvas) return;
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-        if (navLinks.classList.contains('active') &&
-            !navLinks.contains(e.target) &&
-            !mobileMenuBtn.contains(e.target)) {
-            closeMobileMenu();
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 10;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Experience: Digital Flow Lines
+    const linesCount = 30;
+    const lines = [];
+
+    for (let i = 0; i < linesCount; i++) {
+        const points = [];
+        for (let j = 0; j < 50; j++) {
+            points.push(new THREE.Vector3(
+                (Math.random() - 0.5) * 20,
+                (Math.random() - 0.5) * 20,
+                (Math.random() - 0.5) * 10
+            ));
         }
+        
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const material = new THREE.LineBasicMaterial({ 
+            color: i % 2 === 0 ? 0x0066FF : 0x00D4FF,
+            transparent: true,
+            opacity: 0.4
+        });
+        
+        const line = new THREE.Line(geometry, material);
+        scene.add(line);
+        lines.push({ line, originalPoints: points, speed: 0.01 + Math.random() * 0.02 });
+    }
+
+    const animate = () => {
+        if (!document.getElementById('mobileMenuOverlay').classList.contains('active')) {
+            requestAnimationFrame(animate);
+            return;
+        }
+
+        requestAnimationFrame(animate);
+
+        const time = Date.now() * 0.001;
+
+        lines.forEach((item, i) => {
+            item.line.rotation.z = time * item.speed;
+            item.line.rotation.y = Math.sin(time * 0.5 + i) * 0.2;
+            
+            const pos = item.line.geometry.attributes.position.array;
+            for(let j = 0; j < pos.length; j += 3) {
+                pos[j+1] += Math.sin(time + j) * 0.005;
+            }
+            item.line.geometry.attributes.position.needsUpdate = true;
+        });
+
+        renderer.render(scene, camera);
+    };
+
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
     });
 }
 
