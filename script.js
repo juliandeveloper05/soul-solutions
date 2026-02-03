@@ -8,6 +8,7 @@ const ProjectCore = {
         this.init3DHero();
         this.initNavbar();
         this.initMobileMenu();
+        this.initLogoAnimation();
         this.initScrollAnimations();
         this.initTiltEffect();
         this.initContactForm();
@@ -112,6 +113,42 @@ const ProjectCore = {
 
         window.addEventListener('scroll', handleScroll);
         handleScroll();
+    },
+
+    // ========================================
+    // Premium Logo Animation
+    // ========================================
+    initLogoAnimation() {
+        const logo = document.querySelector('.logo');
+        const logoIcon = document.querySelector('.logo-icon-svg');
+        
+        if (!logo || !logoIcon || !window.gsap) return;
+
+        logo.addEventListener('mouseenter', () => {
+            gsap.to(logoIcon, {
+                rotateY: 180,
+                duration: 0.8,
+                ease: 'power2.inOut'
+            });
+            gsap.to('.logo-glow', {
+                scale: 1.5,
+                opacity: 0.8,
+                duration: 0.5
+            });
+        });
+
+        logo.addEventListener('mouseleave', () => {
+            gsap.to(logoIcon, {
+                rotateY: 0,
+                duration: 0.8,
+                ease: 'power2.inOut'
+            });
+            gsap.to('.logo-glow', {
+                scale: 1,
+                opacity: 0.3,
+                duration: 0.5
+            });
+        });
     },
 
     // ========================================

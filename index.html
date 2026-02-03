@@ -67,7 +67,20 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <div class="logo-icon">⚡</div>
+                <div class="logo-wrapper">
+                    <div class="logo-icon-svg">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 4L8 18h6l-2 10 10-14h-6l2-10z" fill="url(#logoGradient)" />
+                            <defs>
+                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#0066FF" />
+                                    <stop offset="100%" stop-color="#00D4FF" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="logo-glow"></div>
+                </div>
                 <span>Soul Solutions</span>
             </a>
             <ul class="nav-links">
