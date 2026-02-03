@@ -3,6 +3,7 @@
 Landing page profesional para servicios de consultoría en modernización de sistemas mainframe.
 
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat&logo=vercel)](https://soul-solutions-mauve.vercel.app/)
+[![Three.js](https://img.shields.io/badge/Three.js-Black?style=flat&logo=three.js&logoColor=white)](https://threejs.org/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -13,7 +14,7 @@ Landing page profesional para servicios de consultoría en modernización de sis
 
 ## 📋 Descripción
 
-Landing page que presenta servicios de consultoría especializados en la transformación de sistemas legacy hacia arquitecturas modernas. Combina la robustez del mainframe con tecnologías de vanguardia.
+Landing page que presenta servicios de consultoría especializados en la transformación de sistemas legacy hacia arquitecturas modernas. Esta versión destaca por su **Fondo Hero 3D** interactivo y una arquitectura de código optimizada.
 
 ### Servicios Ofrecidos
 
@@ -35,32 +36,34 @@ Landing page que presenta servicios de consultoría especializados en la transfo
 ### Modern Stack
 | Tecnología | Uso |
 |------------|-----|
+| Three.js | 3D Interactive Background |
 | Next.js | React Framework |
 | Node.js | Backend Runtime |
 | TypeScript | Type Safety |
 | MongoDB | NoSQL Database |
 
 ### Metodologías
-- Agile / Scrum
-- Sprint Planning
-- Cross-Functional Teams
+- Agile / Scrum (Sprints de 2 semanas)
+- Cross-Functional Collaboration
+- Stakeholder Engagement
 
-## 🎨 Características
+## 🎨 Características v2.0
 
-- ✅ Dark mode premium con glassmorphism
-- ✅ Animaciones fluidas con Intersection Observer
-- ✅ Formulario de contacto funcional (Web3Forms)
-- ✅ Diseño 100% responsive
-- ✅ SEO optimizado
+- ✅ **Inmersive 3D Experience**: Fondo dinámico con partículas y geometrías 3D usando Three.js.
+- ✅ **Optimized Architecture**: Estructura modular `ProjectCore` para una mejor mantenibilidad.
+- ✅ **Premium Glassmorphism**: Estilos CSS refinados con efectos de transparencia y desenfoque avanzados.
+- ✅ **High Performance**: Loop de renderizado optimizado y gestión de recursos (GPU/CPU).
+- ✅ **Interactive Elements**: Efectos de **3D Tilt** en tarjetas y animaciones por scroll.
+- ✅ **Senior-Level SEO**: Metadatos modernos y tiempos de carga optimizados.
 
 ## 📁 Estructura
 
 ```
 soul-solutions/
-├── index.html    # Estructura HTML
-├── styles.css    # Estilos y animaciones
-├── script.js     # Interactividad
-└── README.md
+├── index.html    # Estructura semántica & SEO
+├── styles.css    # Diseño premium & variables CSS
+├── script.js     # Lógica modular & Motor 3D
+└── README.md     # Documentación
 ```
 
 ## 🚀 Deploy
