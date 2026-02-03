@@ -12,6 +12,8 @@ const ProjectCore = {
         this.initTiltEffect();
         this.initContactForm();
         this.initSmoothScroll();
+        this.initStatsCounter();
+        this.initParallax();
     }
 };
 
@@ -39,23 +41,53 @@ function init3DHero() {
 
     const particlesGeometry = new THREE.BufferGeometry();
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x0066FF, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+    const particlesMaterial = new THREE.PointsMaterial({ 
+        size: 0.015, 
+        color: 0x0066FF, 
+        transparent: true, 
+        opacity: 0.5, 
+        blending: THREE.AdditiveBlending 
+    });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
     const geometries = [];
-    // Moved torus further left and down to avoid navbar center/logo area
-    const torus = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.2, 16, 100), new THREE.MeshBasicMaterial({ color: 0x0066FF, wireframe: true, transparent: true, opacity: 0.2 }));
+    // Torus moved further left and down to avoid navbar overlap
+    const torus = new THREE.Mesh(
+        new THREE.TorusGeometry(1.2, 0.2, 16, 100), 
+        new THREE.MeshBasicMaterial({ 
+            color: 0x0066FF, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.2 
+        })
+    );
     torus.position.set(-4, -1, -3);
     scene.add(torus);
     geometries.push(torus);
 
-    const icosahedron = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 1), new THREE.MeshBasicMaterial({ color: 0x00D4FF, wireframe: true, transparent: true, opacity: 0.25 }));
+    const icosahedron = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.8, 1), 
+        new THREE.MeshBasicMaterial({ 
+            color: 0x00D4FF, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.25 
+        })
+    );
     icosahedron.position.set(3, -2, -4);
     scene.add(icosahedron);
     geometries.push(icosahedron);
 
-    const octahedron = new THREE.Mesh(new THREE.OctahedronGeometry(0.6, 0), new THREE.MeshBasicMaterial({ color: 0xA855F7, wireframe: true, transparent: true, opacity: 0.2 }));
+    const octahedron = new THREE.Mesh(
+        new THREE.OctahedronGeometry(0.6, 0), 
+        new THREE.MeshBasicMaterial({ 
+            color: 0xA855F7, 
+            wireframe: true, 
+            transparent: true, 
+            opacity: 0.2 
+        })
+    );
     octahedron.position.set(-2, 2, -5);
     scene.add(octahedron);
     geometries.push(octahedron);
@@ -96,7 +128,10 @@ function init3DHero() {
     window.addEventListener('resize', handleResize);
 
     window.addEventListener('beforeunload', () => {
-        scene.traverse(obj => { if (obj.geometry) obj.geometry.dispose(); if (obj.material) obj.material.dispose(); });
+        scene.traverse(obj => { 
+            if (obj.geometry) obj.geometry.dispose(); 
+            if (obj.material) obj.material.dispose(); 
+        });
         renderer.dispose();
     });
 }
@@ -122,49 +157,59 @@ function initNavbar() {
 }
 
 // ========================================
-// Mobile Menu Toggle
+// Mobile Menu Toggle - FIXED VERSION
 // ========================================
 function initMobileMenu() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
 
     if (!mobileMenuBtn || !navLinks) return;
 
     const closeMobileMenu = () => {
         navLinks.classList.remove('active');
         mobileMenuBtn.classList.remove('active');
-        const spans = mobileMenuBtn.querySelectorAll('span');
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
     };
 
-    mobileMenuBtn.addEventListener('click', () => {
-        const isActive = navLinks.classList.toggle('active');
+    // Toggle menu on button click
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navLinks.classList.toggle('active');
         mobileMenuBtn.classList.toggle('active');
+    });
 
-        const spans = mobileMenuBtn.querySelectorAll('span');
-        if (isActive) {
-            spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
-        } else {
+    // Close menu when clicking on links
+    const navLinkElements = navLinks.querySelectorAll('a');
+    navLinkElements.forEach(link => {
+        link.addEventListener('click', () => {
             closeMobileMenu();
-        }
+        });
     });
 
-    // Close on link click
-    navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMobileMenu);
-    });
-
-    // Close on outside click
+    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         if (navLinks.classList.contains('active') &&
             !navLinks.contains(e.target) &&
             !mobileMenuBtn.contains(e.target)) {
             closeMobileMenu();
         }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+
+    // Close menu on resize to desktop
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        }, 250);
     });
 }
 
@@ -381,6 +426,13 @@ style.textContent = `
             transform: translateX(100px);
         }
     }
+    @media (max-width: 768px) {
+        .notification {
+            right: 16px !important;
+            left: 16px !important;
+            max-width: calc(100% - 32px) !important;
+        }
+    }
 `;
 document.head.appendChild(style);
 
@@ -464,9 +516,6 @@ function animateNumber(element, start, end, suffix, duration = 2000) {
     requestAnimationFrame(animate);
 }
 
-// Initialize counter on load
-initStatsCounter();
-
 // ========================================
 // Parallax Effect on Scroll
 // ========================================
@@ -482,8 +531,9 @@ function initParallax() {
                 
                 // Parallax for hero elements
                 const heroContent = document.querySelector('.hero-content');
-                if (heroContent) {
+                if (heroContent && scrolled < window.innerHeight) {
                     heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
+                    heroContent.style.opacity = `${1 - scrolled / window.innerHeight}`;
                 }
 
                 ticking = false;
@@ -492,8 +542,6 @@ function initParallax() {
         }
     });
 }
-
-initParallax();
 
 // ========================================
 // Console Easter Egg
