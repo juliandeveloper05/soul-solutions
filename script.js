@@ -223,6 +223,71 @@ const ProjectCore = {
     // Scroll-triggered Animations
     // ========================================
     initScrollAnimations() {
+        if (window.gsap && window.ScrollTrigger) {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.from('.hero-badge, .hero-title, .hero-subtitle, .hero-ctas, .hero-stats', {
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                ease: 'power3.out',
+                stagger: 0.15
+            });
+
+            gsap.utils.toArray('.section-header').forEach((header) => {
+                gsap.from(header, {
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: header,
+                        start: 'top 80%'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.service-card').forEach((card, index) => {
+                gsap.from(card, {
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    delay: index * 0.05,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%'
+                    }
+                });
+            });
+
+            gsap.utils.toArray('.tech-column, .timeline-item, .stat-card, .contact-form, .contact-info').forEach((item) => {
+                gsap.from(item, {
+                    opacity: 0,
+                    y: 40,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 85%'
+                    }
+                });
+            });
+
+            gsap.to('.hero-content', {
+                yPercent: 20,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '#hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+
+            return;
+        }
+
         const observerOptions = {
             root: null,
             threshold: 0.1,
@@ -449,14 +514,5 @@ function showNotification(message, type = 'info') {
 
 // Global scope init for non-method functions
 initStatsCounter();
-
-// Parallax
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent && window.innerWidth > 768) {
-        heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
-    }
-});
 
 console.log('%c⚡ Soul Solutions ', 'color: #0066FF; font-size: 24px; font-weight: bold;');
