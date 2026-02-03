@@ -13,6 +13,9 @@ const ProjectCore = {
         this.initTiltEffect();
         this.initContactForm();
         this.initSmoothScroll();
+        
+        // Final refresh to ensure all positions are correct
+        setTimeout(() => { if (window.ScrollTrigger) ScrollTrigger.refresh(); }, 500);
     },
 
     // ========================================
@@ -263,6 +266,9 @@ const ProjectCore = {
         if (window.gsap && window.ScrollTrigger) {
             gsap.registerPlugin(ScrollTrigger);
 
+            // Optimization for mobile performance and scroll stability
+            ScrollTrigger.config({ limitCallbacks: true });
+            
             // Hero entrance with forced initial visibility to avoid CSS conflicts
             const heroElements = '.hero-badge, .hero-title, .hero-subtitle, .hero-ctas, .hero-stats';
             gsap.set(heroElements, { opacity: 1, visibility: 'visible' }); // Ensure visible before animating from 0

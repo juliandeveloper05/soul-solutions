@@ -105,10 +105,11 @@ h1, h2, h3, h4, h5, h6 {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1100;
+    z-index: 1200; /* Increased z-index */
     width: calc(100% - 64px);
     max-width: 1200px;
     transition: all 0.4s var(--ease-out);
+    contain: layout style; /* Performance optimization */
 }
 
 .navbar.scrolled {
@@ -243,6 +244,7 @@ h1, h2, h3, h4, h5, h6 {
 ======================================== */
 .hero {
     min-height: 100vh;
+    min-height: 100svh; /* Modern dynamic viewport unit */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,6 +252,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 160px 32px 100px;
     overflow: hidden;
     background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 200px);
+    contain: paint; /* Better performance & layout isolation */
 }
 
 .hero-canvas {
@@ -1170,7 +1173,7 @@ section {
     
     .hero {
         padding: 140px 20px 80px;
-        min-height: auto;
+        min-height: 100svh; /* Ensure full screen on mobile even with auto padding */
     }
     
     .hero-title {
