@@ -39,23 +39,24 @@ function init3DHero() {
 
     const particlesGeometry = new THREE.BufferGeometry();
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x0066FF, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+    const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x0066FF, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
     const geometries = [];
-    const torus = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.2, 16, 100), new THREE.MeshBasicMaterial({ color: 0x0066FF, wireframe: true, transparent: true, opacity: 0.3 }));
-    torus.position.set(-2, 1, -2);
+    // Moved torus further left and down to avoid navbar center/logo area
+    const torus = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.2, 16, 100), new THREE.MeshBasicMaterial({ color: 0x0066FF, wireframe: true, transparent: true, opacity: 0.2 }));
+    torus.position.set(-4, -1, -3);
     scene.add(torus);
     geometries.push(torus);
 
-    const icosahedron = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 1), new THREE.MeshBasicMaterial({ color: 0x00D4FF, wireframe: true, transparent: true, opacity: 0.4 }));
-    icosahedron.position.set(2, -1, -3);
+    const icosahedron = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 1), new THREE.MeshBasicMaterial({ color: 0x00D4FF, wireframe: true, transparent: true, opacity: 0.25 }));
+    icosahedron.position.set(3, -2, -4);
     scene.add(icosahedron);
     geometries.push(icosahedron);
 
-    const octahedron = new THREE.Mesh(new THREE.OctahedronGeometry(0.6, 0), new THREE.MeshBasicMaterial({ color: 0xA855F7, wireframe: true, transparent: true, opacity: 0.35 }));
-    octahedron.position.set(-3, -2, -4);
+    const octahedron = new THREE.Mesh(new THREE.OctahedronGeometry(0.6, 0), new THREE.MeshBasicMaterial({ color: 0xA855F7, wireframe: true, transparent: true, opacity: 0.2 }));
+    octahedron.position.set(-2, 2, -5);
     scene.add(octahedron);
     geometries.push(octahedron);
 

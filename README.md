@@ -51,7 +51,8 @@ Landing page que presenta servicios de consultoría especializados en la transfo
 
 - ✅ **Inmersive 3D Experience**: Fondo dinámico con partículas y geometrías 3D usando Three.js.
 - ✅ **Optimized Architecture**: Estructura modular `ProjectCore` para una mejor mantenibilidad.
-- ✅ **Premium Glassmorphism**: Estilos CSS refinados con efectos de transparencia y desenfoque avanzados.
+- ✅ **Enhanced UI Legibility**: Mejoras en el contraste del navbar y posicionamiento estratégico de elementos 3D para evitar solapamientos visuales.
+- ✅ **Premium Glassmorphism**: Estilos CSS refinados con efectos de transparencia y desenfoque avanzados, optimizados para legibilidad.
 - ✅ **High Performance**: Loop de renderizado optimizado y gestión de recursos (GPU/CPU).
 - ✅ **Interactive Elements**: Efectos de **3D Tilt** en tarjetas y animaciones por scroll.
 - ✅ **Senior-Level SEO**: Metadatos modernos y tiempos de carga optimizados.
