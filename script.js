@@ -1,347 +1,511 @@
 // ========================================
-// Soul Solutions - Interactive JavaScript
+// Soul Solutions 3D - Modern Interactive JS
+// Three.js + Advanced Animations
 // ========================================
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Initialize all modules
-  initNavbar();
-  initScrollAnimations();
-  initMobileMenu();
-  initContactForm();
-  initSmoothScroll();
-});
+const ProjectCore = {
+    init() {
+        this.init3DHero();
+        this.initNavbar();
+        this.initMobileMenu();
+        this.initScrollAnimations();
+        this.initTiltEffect();
+        this.initContactForm();
+        this.initSmoothScroll();
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => ProjectCore.init.call(ProjectCore));
+
+
+// ========================================
+// Three.js 3D Hero Background
+// ========================================
+function init3DHero() {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const particlesCount = window.innerWidth > 768 ? 2000 : 1000;
+    const posArray = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 15;
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x0066FF, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    const geometries = [];
+    const torus = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.2, 16, 100), new THREE.MeshBasicMaterial({ color: 0x0066FF, wireframe: true, transparent: true, opacity: 0.3 }));
+    torus.position.set(-2, 1, -2);
+    scene.add(torus);
+    geometries.push(torus);
+
+    const icosahedron = new THREE.Mesh(new THREE.IcosahedronGeometry(0.8, 1), new THREE.MeshBasicMaterial({ color: 0x00D4FF, wireframe: true, transparent: true, opacity: 0.4 }));
+    icosahedron.position.set(2, -1, -3);
+    scene.add(icosahedron);
+    geometries.push(icosahedron);
+
+    const octahedron = new THREE.Mesh(new THREE.OctahedronGeometry(0.6, 0), new THREE.MeshBasicMaterial({ color: 0xA855F7, wireframe: true, transparent: true, opacity: 0.35 }));
+    octahedron.position.set(-3, -2, -4);
+    scene.add(octahedron);
+    geometries.push(octahedron);
+
+    let mouseX = 0, mouseY = 0;
+    const handleMouseMove = (e) => {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    };
+    document.addEventListener('mousemove', handleMouseMove);
+
+    const clock = new THREE.Clock();
+    const animate = () => {
+        requestAnimationFrame(animate);
+        const elapsedTime = clock.getElapsedTime();
+
+        particlesMesh.rotation.y = elapsedTime * 0.1;
+        particlesMesh.rotation.x = Math.sin(elapsedTime * 0.2) * 0.2;
+
+        geometries.forEach((geo, i) => {
+            geo.rotation.x = elapsedTime * (0.3 + i * 0.1);
+            geo.rotation.y = elapsedTime * (0.2 + i * 0.05);
+            geo.position.y += Math.sin(elapsedTime + i) * 0.001;
+        });
+
+        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+        camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    window.addEventListener('beforeunload', () => {
+        scene.traverse(obj => { if (obj.geometry) obj.geometry.dispose(); if (obj.material) obj.material.dispose(); });
+        renderer.dispose();
+    });
+}
+
 
 // ========================================
 // Navbar Scroll Effect
 // ========================================
 function initNavbar() {
-  const navbar = document.querySelector(".navbar");
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
 
-  const handleScroll = () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  };
+    const handleScroll = () => {
+        if (window.scrollY > 100) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    };
 
-  window.addEventListener("scroll", handleScroll);
-  handleScroll(); // Initial check
-}
-
-// ========================================
-// Scroll Animations with Intersection Observer
-// ========================================
-function initScrollAnimations() {
-  // Add fade-in class to animated elements
-  const animatedElements = document.querySelectorAll(
-    ".service-card, .tech-column, .method-card, .contact-wrapper > *"
-  );
-
-  animatedElements.forEach((el) => el.classList.add("fade-in"));
-
-  // Create observer
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.1,
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe elements
-  animatedElements.forEach((el) => observer.observe(el));
-
-  // Stagger animation for grids
-  const grids = document.querySelectorAll(
-    ".services-grid, .methodology-grid, .tech-badges"
-  );
-  grids.forEach((grid) => {
-    const children = grid.children;
-    Array.from(children).forEach((child, index) => {
-      child.style.transitionDelay = `${index * 0.1}s`;
-    });
-  });
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
 }
 
 // ========================================
 // Mobile Menu Toggle
 // ========================================
 function initMobileMenu() {
-  const mobileMenuBtn = document.querySelector(".mobile-menu");
-  const navLinks = document.querySelector(".nav-links");
+    const mobileMenuBtn = document.querySelector('.mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
 
-  if (!mobileMenuBtn || !navLinks) return;
+    if (!mobileMenuBtn || !navLinks) return;
 
-  const closeMobileMenu = () => {
-    navLinks.classList.remove("active");
-    mobileMenuBtn.classList.remove("active");
-    const spans = mobileMenuBtn.querySelectorAll("span");
-    spans[0].style.transform = "none";
-    spans[1].style.opacity = "1";
-    spans[2].style.transform = "none";
-  };
+    const closeMobileMenu = () => {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        const spans = mobileMenuBtn.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+    };
 
-  mobileMenuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-    mobileMenuBtn.classList.toggle("active");
+    mobileMenuBtn.addEventListener('click', () => {
+        const isActive = navLinks.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
 
-    // Animate hamburger to X
-    const spans = mobileMenuBtn.querySelectorAll("span");
-    if (mobileMenuBtn.classList.contains("active")) {
-      spans[0].style.transform = "rotate(45deg) translate(5px, 5px)";
-      spans[1].style.opacity = "0";
-      spans[2].style.transform = "rotate(-45deg) translate(5px, -5px)";
-    } else {
-      closeMobileMenu();
-    }
-  });
+        const spans = mobileMenuBtn.querySelectorAll('span');
+        if (isActive) {
+            spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+        } else {
+            closeMobileMenu();
+        }
+    });
 
-  // Close menu when clicking a link
-  navLinks.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMobileMenu);
-  });
+    // Close on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
 
-  // Close menu on scroll (mobile UX improvement)
-  let lastScrollY = window.scrollY;
-  window.addEventListener("scroll", () => {
-    if (
-      Math.abs(window.scrollY - lastScrollY) > 50 &&
-      navLinks.classList.contains("active")
-    ) {
-      closeMobileMenu();
-    }
-    lastScrollY = window.scrollY;
-  });
-
-  // Close menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (
-      navLinks.classList.contains("active") &&
-      !navLinks.contains(e.target) &&
-      !mobileMenuBtn.contains(e.target)
-    ) {
-      closeMobileMenu();
-    }
-  });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (navLinks.classList.contains('active') &&
+            !navLinks.contains(e.target) &&
+            !mobileMenuBtn.contains(e.target)) {
+            closeMobileMenu();
+        }
+    });
 }
 
 // ========================================
-// Contact Form Handling
+// Scroll-triggered Animations
+// ========================================
+function initScrollAnimations() {
+    const observerOptions = {
+        root: null,
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements
+    const animatedElements = document.querySelectorAll(`
+        .service-card,
+        .tech-column,
+        .timeline-item,
+        .stat-card
+    `);
+
+    animatedElements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(el);
+    });
+}
+
+// ========================================
+// 3D Tilt Effect on Cards
+// ========================================
+function initTiltEffect() {
+    if (window.innerWidth < 768) return; // Skip on mobile
+
+    const cards = document.querySelectorAll('[data-tilt]');
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+        });
+    });
+}
+
+// ========================================
+// Contact Form with Web3Forms
 // ========================================
 function initContactForm() {
-  const form = document.getElementById("contactForm");
+    const form = document.getElementById('contactForm');
+    if (!form) return;
 
-  if (!form) return;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalHTML = submitBtn.innerHTML;
 
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-
-    // Show loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
+        // Loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
             <span>Enviando...</span>
             <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
                 <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round">
-                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                    <animateTransform 
+                        attributeName="transform" 
+                        type="rotate" 
+                        from="0 12 12" 
+                        to="360 12 12" 
+                        dur="1s" 
+                        repeatCount="indefinite"/>
                 </path>
             </svg>
         `;
 
-    try {
-      const formData = new FormData(form);
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            });
 
-      const data = await response.json();
+            const data = await response.json();
 
-      if (data.success) {
-        // Show success state
-        submitBtn.innerHTML = `
+            if (data.success) {
+                // Success state
+                submitBtn.innerHTML = `
                     <span>¡Mensaje Enviado!</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 6L9 17l-5-5"/>
                     </svg>
                 `;
-        submitBtn.style.background =
-          "linear-gradient(135deg, #10B981 0%, #059669 100%)";
-        form.reset();
-      } else {
-        throw new Error(data.message || "Error al enviar");
-      }
-    } catch (error) {
-      // Show error state
-      submitBtn.innerHTML = `
+                submitBtn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+                
+                // Reset form
+                form.reset();
+
+                // Show success message
+                showNotification('¡Mensaje enviado exitosamente! Te contactaré pronto.', 'success');
+            } else {
+                throw new Error(data.message || 'Error al enviar');
+            }
+        } catch (error) {
+            // Error state
+            submitBtn.innerHTML = `
                 <span>Error - Reintentar</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
             `;
-      submitBtn.style.background =
-        "linear-gradient(135deg, #EF4444 0%, #DC2626 100%)";
-      console.error("Form error:", error);
-    }
+            submitBtn.style.background = 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)';
+            
+            showNotification('Error al enviar el mensaje. Por favor, intenta de nuevo.', 'error');
+            console.error('Form error:', error);
+        }
 
-    // Reset button after delay
-    setTimeout(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
-      submitBtn.style.background = "";
-    }, 3000);
-  });
-
-  // Input focus effects
-  const inputs = form.querySelectorAll("input, select, textarea");
-  inputs.forEach((input) => {
-    input.addEventListener("focus", () => {
-      input.parentElement.classList.add("focused");
+        // Reset button after 3s
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHTML;
+            submitBtn.style.background = '';
+        }, 3000);
     });
 
-    input.addEventListener("blur", () => {
-      input.parentElement.classList.remove("focused");
+    // Input focus effects
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            input.parentElement.style.transform = 'scale(1.01)';
+        });
+
+        input.addEventListener('blur', () => {
+            input.parentElement.style.transform = 'scale(1)';
+        });
     });
-  });
 }
+
+// ========================================
+// Notification System
+// ========================================
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 32px;
+        padding: 20px 28px;
+        background: ${type === 'success' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'};
+        backdrop-filter: blur(20px);
+        border: 1px solid ${type === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'};
+        border-radius: 16px;
+        color: white;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        z-index: 10000;
+        animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        setTimeout(() => notification.remove(), 400);
+    }, 4000);
+}
+
+// Add notification animations to CSS dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    @keyframes slideOutRight {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100px);
+        }
+    }
+`;
+document.head.appendChild(style);
 
 // ========================================
 // Smooth Scroll for Anchor Links
 // ========================================
 function initSmoothScroll() {
-  const links = document.querySelectorAll('a[href^="#"]');
+    const links = document.querySelectorAll('a[href^="#"]');
 
-  links.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href");
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href === '#') return;
 
-      if (href === "#") return;
+            const target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
 
-      const target = document.querySelector(href);
+                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 40;
 
-      if (target) {
-        e.preventDefault();
-
-        const navHeight = document.querySelector(".navbar").offsetHeight;
-        const targetPosition =
-          target.getBoundingClientRect().top + window.scrollY - navHeight;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth",
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         });
-      }
     });
-  });
 }
 
 // ========================================
-// Tech Badge Hover Effects (Desktop only)
+// Animated Counter for Stats
 // ========================================
-if (window.innerWidth > 768) {
-  document.querySelectorAll(".tech-badge").forEach((badge) => {
-    badge.addEventListener("mouseenter", () => {
-      badge.style.transform = "translateY(-4px) scale(1.02)";
-    });
+function initStatsCounter() {
+    const stats = document.querySelectorAll('.stat-number');
+    const observerOptions = {
+        threshold: 0.5
+    };
 
-    badge.addEventListener("mouseleave", () => {
-      badge.style.transform = "";
-    });
-  });
-}
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const stat = entry.target;
+                const finalValue = stat.textContent;
+                const match = finalValue.match(/^([\d.]+)(.*)$/);
+                
+                if (match) {
+                    const number = parseFloat(match[1]);
+                    const suffix = match[2];
+                    animateNumber(stat, 0, number, suffix);
+                }
+                
+                observer.unobserve(stat);
+            }
+        });
+    }, observerOptions);
 
-// ========================================
-// Parallax Effect for Hero Orbs (Desktop only)
-// ========================================
-if (window.innerWidth > 768) {
-  document.addEventListener("mousemove", (e) => {
-    const orbs = document.querySelectorAll(".gradient-orb");
-    const x = e.clientX / window.innerWidth;
-    const y = e.clientY / window.innerHeight;
-
-    orbs.forEach((orb, index) => {
-      const speed = (index + 1) * 20;
-      const xOffset = (x - 0.5) * speed;
-      const yOffset = (y - 0.5) * speed;
-
-      orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-    });
-  });
-}
-
-// ========================================
-// Stats Counter Animation
-// ========================================
-function animateStats() {
-  const stats = document.querySelectorAll(".stat-number");
-
-  const observerOptions = {
-    threshold: 0.5,
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const stat = entry.target;
-        const finalValue = stat.textContent;
-
-        // Extract number and suffix
-        const match = finalValue.match(/^([\d.]+)(.*)$/);
-        if (match) {
-          const number = parseFloat(match[1]);
-          const suffix = match[2];
-
-          animateNumber(stat, 0, number, suffix);
-        }
-
-        observer.unobserve(stat);
-      }
-    });
-  }, observerOptions);
-
-  stats.forEach((stat) => observer.observe(stat));
+    stats.forEach(stat => observer.observe(stat));
 }
 
 function animateNumber(element, start, end, suffix, duration = 2000) {
-  const startTime = performance.now();
+    const startTime = performance.now();
 
-  const animate = (currentTime) => {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
+    const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
 
-    // Easing function (ease-out-quad)
-    const easeProgress = 1 - Math.pow(1 - progress, 3);
+        const current = start + (end - start) * easeProgress;
+        const displayValue = Number.isInteger(end) 
+            ? Math.round(current) 
+            : current.toFixed(1);
 
-    const current = start + (end - start) * easeProgress;
+        element.textContent = displayValue + suffix;
 
-    // Format number
-    let displayValue;
-    if (Number.isInteger(end)) {
-      displayValue = Math.round(current);
-    } else {
-      displayValue = current.toFixed(1);
-    }
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    };
 
-    element.textContent = displayValue + suffix;
-
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    }
-  };
-
-  requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 }
 
-// Initialize stats animation
-animateStats();
+// Initialize counter on load
+initStatsCounter();
+
+// ========================================
+// Parallax Effect on Scroll
+// ========================================
+function initParallax() {
+    if (window.innerWidth < 768) return;
+
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const scrolled = window.pageYOffset;
+                
+                // Parallax for hero elements
+                const heroContent = document.querySelector('.hero-content');
+                if (heroContent) {
+                    heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
+                }
+
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+}
+
+initParallax();
+
+// ========================================
+// Console Easter Egg
+// ========================================
+console.log(
+    '%c⚡ Soul Solutions ',
+    'color: #0066FF; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,102,255,0.5);'
+);
+console.log(
+    '%cTransformando mainframes con Three.js 🚀',
+    'color: #00D4FF; font-size: 14px; font-weight: 500;'
+);
+console.log(
+    '%c¿Te gusta el código? Contáctame: juliansoto.dev@gmail.com',
+    'color: #A855F7; font-size: 12px;'
+);

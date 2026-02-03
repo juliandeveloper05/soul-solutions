@@ -3,17 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-    <!-- Google Analytics -->
+    <!-- Performance & SEO -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJRV70336H"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        gtag('config', 'G-ZJRV70336H');
+        gtag('config', 'G-ZJRV70336H', { 'anonymize_ip': true });
     </script>
+
+
     <meta name="description"
         content="Soul Solutions - Servicios de consultoría en modernización de sistemas mainframe. Expertos en COBOL, JCL, Db2 e integración con tecnologías modernas.">
     <meta name="keywords"
@@ -40,29 +42,35 @@
     <meta name="author" content="Julian Soto">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://soul-solutions-mauve.vercel.app/">
-    <title>Soul Solutions | Modernización de Mainframes</title>
+    <title>Soul Solutions | Modernización de Mainframes 3D</title>
+
     <!-- Favicon SVG -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230066FF'/%3E%3Cstop offset='100%25' stop-color='%2300D4FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0f'/%3E%3Cpath d='M18 4L8 18h6l-2 10 10-14h-6l2-10z' fill='url(%23g)'/%3E%3C/svg%3E">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+
+    <!-- Modern Typography 2026 -->
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@700,500,400&display=swap"
         rel="stylesheet">
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <span class="logo-icon">⚡</span>
-                Soul Solutions
+                <div class="logo-icon">⚡</div>
+                <span>Soul Solutions</span>
             </a>
             <ul class="nav-links">
-                <li><a href="#services">Servicios</a></li>
-                <li><a href="#technologies">Tecnologías</a></li>
-                <li><a href="#methodology">Metodología</a></li>
+                <li><a href="#services" class="nav-link">Servicios</a></li>
+                <li><a href="#technologies" class="nav-link">Stack</a></li>
+                <li><a href="#methodology" class="nav-link">Metodología</a></li>
                 <li><a href="#contact" class="nav-cta">Contactar</a></li>
             </ul>
             <button class="mobile-menu" aria-label="Menu">
@@ -73,53 +81,54 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with 3D Background -->
     <section id="hero" class="hero">
-        <div class="hero-bg">
-            <div class="code-rain"></div>
-            <div class="gradient-orb gradient-orb-1"></div>
-            <div class="gradient-orb gradient-orb-2"></div>
-        </div>
+        <canvas id="heroCanvas" class="hero-canvas"></canvas>
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="pulse"></span>
-                Expertos en Modernización
+            <div class="hero-badge animate-fade-in">
+                <span class="badge-pulse"></span>
+                <span>Expertos en Modernización</span>
             </div>
-            <h1 class="hero-title">
-                Transformamos tu
-                <span class="gradient-text">Mainframe</span>
+            <h1 class="hero-title animate-fade-in">
+                Transformamos<br>
+                <span class="gradient-text">Mainframe</span><br>
                 al futuro digital
             </h1>
-            <p class="hero-subtitle">
-                Conectamos sistemas legacy COBOL con tecnologías modernas.
-                Más de 4 años optimizando aplicaciones críticas en producción
-                con metodologías ágiles.
+            <p class="hero-subtitle animate-fade-in">
+                Conectamos sistemas legacy COBOL con tecnologías modernas.<br>
+                Más de 4 años optimizando aplicaciones críticas en producción.
             </p>
-            <div class="hero-ctas">
+            <div class="hero-ctas animate-fade-in">
                 <a href="#contact" class="btn btn-primary">
                     <span>Solicitar Consultoría</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                 </a>
-                <a href="#services" class="btn btn-secondary">
-                    Ver Servicios
+                <a href="#services" class="btn btn-glass">
+                    <span>Ver Servicios</span>
                 </a>
             </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">4+</span>
-                    <span class="stat-label">Años de Experiencia</span>
+            <div class="hero-stats animate-fade-in">
+                <div class="stat-card">
+                    <div class="stat-number">4+</div>
+                    <div class="stat-label">Años de Experiencia</div>
                 </div>
-                <div class="stat">
-                    <span class="stat-number">100+</span>
-                    <span class="stat-label">Procesos Optimizados</span>
+                <div class="stat-card">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Procesos Optimizados</div>
                 </div>
-                <div class="stat">
-                    <span class="stat-number">99.9%</span>
-                    <span class="stat-label">Uptime en Producción</span>
+                <div class="stat-card">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime en Producción</div>
                 </div>
             </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll</span>
         </div>
     </section>
 
@@ -128,11 +137,15 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Servicios</span>
-                <h2 class="section-title">Soluciones de <span class="gradient-text">Modernización</span></h2>
-                <p class="section-subtitle">Transformamos sistemas legacy en soluciones escalables y mantenibles</p>
+                <h2 class="section-title">
+                    Soluciones de<br>
+                    <span class="gradient-text">Modernización</span>
+                </h2>
+                <p class="section-subtitle">Transformamos sistemas legacy en soluciones escalables</p>
             </div>
             <div class="services-grid">
-                <div class="service-card">
+                <div class="service-card" data-tilt>
+                    <div class="service-number">01</div>
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path
@@ -140,16 +153,17 @@
                         </svg>
                     </div>
                     <h3>Modernización COBOL</h3>
-                    <p>Refactorización y mantenimiento de aplicaciones COBOL complejas en entornos de producción
-                        críticos.</p>
-                    <ul class="service-features">
-                        <li>Análisis de código legacy</li>
-                        <li>Optimización de rendimiento</li>
-                        <li>Documentación técnica</li>
-                    </ul>
+                    <p>Refactorización y mantenimiento de aplicaciones COBOL en entornos críticos de producción.</p>
+                    <div class="service-tags">
+                        <span class="tag">Legacy Analysis</span>
+                        <span class="tag">Performance</span>
+                        <span class="tag">Documentation</span>
+                    </div>
                 </div>
-                <div class="service-card featured">
-                    <div class="featured-badge">Popular</div>
+
+                <div class="service-card featured" data-tilt>
+                    <div class="featured-badge">⭐ Popular</div>
+                    <div class="service-number">02</div>
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z" />
@@ -157,14 +171,16 @@
                         </svg>
                     </div>
                     <h3>Integración Db2 + APIs</h3>
-                    <p>Conectamos bases de datos Db2 con servicios web modernos para crear arquitecturas híbridas.</p>
-                    <ul class="service-features">
-                        <li>APIs RESTful</li>
-                        <li>Sincronización en tiempo real</li>
-                        <li>Migración gradual</li>
-                    </ul>
+                    <p>Conectamos bases de datos Db2 con servicios web modernos para arquitecturas híbridas.</p>
+                    <div class="service-tags">
+                        <span class="tag">RESTful APIs</span>
+                        <span class="tag">Real-time Sync</span>
+                        <span class="tag">Migration</span>
+                    </div>
                 </div>
-                <div class="service-card">
+
+                <div class="service-card" data-tilt>
+                    <div class="service-number">03</div>
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
@@ -173,14 +189,16 @@
                         </svg>
                     </div>
                     <h3>Automatización JCL</h3>
-                    <p>Gestión y optimización de procesos batch usando JCL para maximizar eficiencia operativa.</p>
-                    <ul class="service-features">
-                        <li>Scheduling optimizado</li>
-                        <li>Manejo de errores</li>
-                        <li>Monitoreo de jobs</li>
-                    </ul>
+                    <p>Optimización de procesos batch usando JCL para maximizar eficiencia operativa.</p>
+                    <div class="service-tags">
+                        <span class="tag">Scheduling</span>
+                        <span class="tag">Error Handling</span>
+                        <span class="tag">Monitoring</span>
+                    </div>
                 </div>
-                <div class="service-card">
+
+                <div class="service-card" data-tilt>
+                    <div class="service-number">04</div>
                     <div class="service-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                             <path
@@ -188,13 +206,12 @@
                         </svg>
                     </div>
                     <h3>Full-Stack Moderno</h3>
-                    <p>Desarrollo de interfaces modernas con Next.js, Node.js y MongoDB para complementar sistemas
-                        mainframe.</p>
-                    <ul class="service-features">
-                        <li>Next.js + TypeScript</li>
-                        <li>APIs con Node.js</li>
-                        <li>MongoDB integrado</li>
-                    </ul>
+                    <p>Desarrollo de interfaces modernas con Next.js, Node.js y MongoDB.</p>
+                    <div class="service-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,14 +222,16 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Stack Tecnológico</span>
-                <h2 class="section-title">Lo mejor de <span class="gradient-text">ambos mundos</span></h2>
-                <p class="section-subtitle">Combinamos la robustez del mainframe con la agilidad del desarrollo moderno
-                </p>
+                <h2 class="section-title">
+                    Lo mejor de<br>
+                    <span class="gradient-text">ambos mundos</span>
+                </h2>
+                <p class="section-subtitle">Combinamos robustez mainframe con agilidad moderna</p>
             </div>
-            <div class="tech-columns">
+            <div class="tech-showcase">
                 <div class="tech-column mainframe">
                     <div class="tech-header">
-                        <div class="tech-icon-large">
+                        <div class="tech-icon-3d">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <rect x="2" y="3" width="20" height="14" rx="2" />
                                 <path d="M8 21h8m-4-4v4" />
@@ -221,50 +240,51 @@
                         <h3>Mainframe</h3>
                         <p>Sistemas legacy empresariales</p>
                     </div>
-                    <div class="tech-badges">
-                        <div class="tech-badge" data-tech="cobol">
-                            <span class="tech-badge-icon">CB</span>
-                            <div class="tech-badge-info">
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <span class="tech-badge cobol">CB</span>
+                            <div class="tech-info">
                                 <strong>COBOL</strong>
                                 <span>Business Logic</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="jcl">
-                            <span class="tech-badge-icon">JC</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge jcl">JC</span>
+                            <div class="tech-info">
                                 <strong>JCL</strong>
                                 <span>Batch Processing</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="vsam">
-                            <span class="tech-badge-icon">VS</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge vsam">VS</span>
+                            <div class="tech-info">
                                 <strong>VSAM</strong>
                                 <span>File Storage</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="db2">
-                            <span class="tech-badge-icon">D2</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge db2">D2</span>
+                            <div class="tech-info">
                                 <strong>Db2</strong>
                                 <span>Enterprise Database</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tech-divider">
-                    <div class="divider-line"></div>
-                    <div class="divider-icon">
+
+                <div class="tech-bridge">
+                    <div class="bridge-line"></div>
+                    <div class="bridge-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M8 7h8m-8 5h8m-8 5h8" />
-                            <path d="M4 7h.01M4 12h.01M4 17h.01" />
+                            <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
                     </div>
-                    <div class="divider-line"></div>
+                    <div class="bridge-line"></div>
                 </div>
+
                 <div class="tech-column modern">
                     <div class="tech-header">
-                        <div class="tech-icon-large">
+                        <div class="tech-icon-3d">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <path d="M12 2L2 7l10 5 10-5-10-5z" />
                                 <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -273,31 +293,31 @@
                         <h3>Modern Stack</h3>
                         <p>Tecnologías de vanguardia</p>
                     </div>
-                    <div class="tech-badges">
-                        <div class="tech-badge" data-tech="nextjs">
-                            <span class="tech-badge-icon">NX</span>
-                            <div class="tech-badge-info">
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <span class="tech-badge nextjs">NX</span>
+                            <div class="tech-info">
                                 <strong>Next.js</strong>
                                 <span>React Framework</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="nodejs">
-                            <span class="tech-badge-icon">ND</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge nodejs">ND</span>
+                            <div class="tech-info">
                                 <strong>Node.js</strong>
                                 <span>Backend Runtime</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="typescript">
-                            <span class="tech-badge-icon">TS</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge typescript">TS</span>
+                            <div class="tech-info">
                                 <strong>TypeScript</strong>
                                 <span>Type Safety</span>
                             </div>
                         </div>
-                        <div class="tech-badge" data-tech="mongodb">
-                            <span class="tech-badge-icon">MG</span>
-                            <div class="tech-badge-info">
+                        <div class="tech-item">
+                            <span class="tech-badge mongodb">MG</span>
+                            <div class="tech-info">
                                 <strong>MongoDB</strong>
                                 <span>NoSQL Database</span>
                             </div>
@@ -313,62 +333,64 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Metodología</span>
-                <h2 class="section-title">Trabajamos con <span class="gradient-text">Agile</span></h2>
-                <p class="section-subtitle">Colaboración continua y entregas incrementales para resultados excepcionales
-                </p>
+                <h2 class="section-title">
+                    Trabajamos con<br>
+                    <span class="gradient-text">Agile</span>
+                </h2>
+                <p class="section-subtitle">Colaboración continua y entregas incrementales</p>
             </div>
-            <div class="methodology-grid">
-                <div class="method-card">
-                    <div class="method-number">01</div>
-                    <div class="method-content">
+            <div class="methodology-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">01</div>
+                    <div class="timeline-content">
                         <h3>Scrum Framework</h3>
-                        <p>Sprints de 2 semanas con entregas funcionales. Reuniones diarias para mantener el proyecto en
+                        <p>Sprints de 2 semanas con entregas funcionales. Daily standups para mantener el proyecto en
                             curso.</p>
-                    </div>
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 6v6l4 2" />
-                        </svg>
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 6v6l4 2" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <div class="method-card">
-                    <div class="method-number">02</div>
-                    <div class="method-content">
+                <div class="timeline-item">
+                    <div class="timeline-marker">02</div>
+                    <div class="timeline-content">
                         <h3>Sprint Planning</h3>
                         <p>Planificación colaborativa para definir prioridades y alcance de cada iteración.</p>
-                    </div>
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-                            <path d="M9 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                                <path d="M9 5a2 2 0 012-2h2a2 2 0 012 2v0a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <div class="method-card">
-                    <div class="method-number">03</div>
-                    <div class="method-content">
+                <div class="timeline-item">
+                    <div class="timeline-marker">03</div>
+                    <div class="timeline-content">
                         <h3>Cross-Functional Teams</h3>
                         <p>Colaboración con equipos diversos para integrar conocimiento legacy y moderno.</p>
-                    </div>
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-                        </svg>
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-                <div class="method-card">
-                    <div class="method-number">04</div>
-                    <div class="method-content">
+                <div class="timeline-item">
+                    <div class="timeline-marker">04</div>
+                    <div class="timeline-content">
                         <h3>Comunicación Directa</h3>
                         <p>Stakeholder engagement continuo para asegurar alineación con objetivos de negocio.</p>
-                    </div>
-                    <div class="method-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                        </svg>
+                        <div class="timeline-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -378,13 +400,15 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <div class="contact-wrapper">
+            <div class="contact-grid">
                 <div class="contact-info">
                     <span class="section-tag">Contacto</span>
-                    <h2 class="section-title">¿Listo para <span class="gradient-text">modernizar</span>?</h2>
+                    <h2 class="section-title">
+                        ¿Listo para<br>
+                        <span class="gradient-text">modernizar</span>?
+                    </h2>
                     <p class="contact-description">
-                        Conversemos sobre cómo puedo ayudarte a transformar tus sistemas legacy
-                        en soluciones modernas y escalables.
+                        Conversemos sobre cómo transformar tus sistemas legacy en soluciones modernas y escalables.
                     </p>
                     <div class="contact-links">
                         <a href="https://www.linkedin.com/in/juliansotodev" target="_blank" rel="noopener noreferrer"
@@ -393,14 +417,14 @@
                                 <path
                                     d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                             </svg>
-                            LinkedIn
+                            <span>LinkedIn</span>
                         </a>
                         <a href="mailto:juliansoto.dev@gmail.com" class="contact-link">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                                 <polyline points="22,6 12,13 2,6" />
                             </svg>
-                            Email
+                            <span>Email</span>
                         </a>
                         <a href="https://juliansoto-portfolio.vercel.app/es" target="_blank" rel="noopener noreferrer"
                             class="contact-link">
@@ -408,14 +432,15 @@
                                 <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
                                 <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
                             </svg>
-                            Portfolio
+                            <span>Portfolio</span>
                         </a>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-                    <!-- Web3Forms Access Key -->
+
+                <form class="contact-form glass-card" id="contactForm" action="https://api.web3forms.com/submit"
+                    method="POST">
                     <input type="hidden" name="access_key" value="d5f49103-348a-4114-8e8e-9254b48e899d">
-                    <input type="hidden" name="subject" value="Nuevo mensaje desde Soul Solutions">
+                    <input type="hidden" name="subject" value="Nuevo mensaje desde Soul Solutions 3D">
                     <input type="hidden" name="from_name" value="Soul Solutions Website">
                     <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
@@ -460,20 +485,20 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <a href="#" class="logo">
-                        <span class="logo-icon">⚡</span>
-                        Soul Solutions
+                        <div class="logo-icon">⚡</div>
+                        <span>Soul Solutions</span>
                     </a>
                     <p>Modernización de sistemas mainframe con tecnologías de vanguardia.</p>
                 </div>
                 <div class="footer-links">
                     <a href="#services">Servicios</a>
-                    <a href="#technologies">Tecnologías</a>
+                    <a href="#technologies">Stack</a>
                     <a href="#methodology">Metodología</a>
                     <a href="#contact">Contacto</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Soul Solutions. Buenos Aires, Argentina.</p>
+                <p>&copy; 2024 Soul Solutions. Buenos Aires, Argentina. Diseñado con Three.js</p>
             </div>
         </div>
     </footer>
