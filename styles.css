@@ -240,7 +240,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 10;
     text-align: center;
     max-width: 1000px;
     margin: 0 auto;
@@ -1040,16 +1040,10 @@ section {
     }
 }
 
+/* CSS Animations removed to favor GSAP control */
 .animate-fade-in {
-    opacity: 0;
-    animation: fade-in-up 0.8s var(--ease-out) forwards;
+    opacity: 1; /* Default to visible, GSAP will handle the entrance */
 }
-
-.animate-fade-in:nth-child(1) { animation-delay: 0.1s; }
-.animate-fade-in:nth-child(2) { animation-delay: 0.2s; }
-.animate-fade-in:nth-child(3) { animation-delay: 0.3s; }
-.animate-fade-in:nth-child(4) { animation-delay: 0.4s; }
-.animate-fade-in:nth-child(5) { animation-delay: 0.5s; }
 
 /* ========================================
    Responsive Design - Mobile First

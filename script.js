@@ -226,12 +226,16 @@ const ProjectCore = {
         if (window.gsap && window.ScrollTrigger) {
             gsap.registerPlugin(ScrollTrigger);
 
-            gsap.from('.hero-badge, .hero-title, .hero-subtitle, .hero-ctas, .hero-stats', {
+            // Hero entrance with forced initial visibility to avoid CSS conflicts
+            const heroElements = '.hero-badge, .hero-title, .hero-subtitle, .hero-ctas, .hero-stats';
+            gsap.set(heroElements, { opacity: 1, visibility: 'visible' }); // Ensure visible before animating from 0
+            gsap.from(heroElements, {
                 opacity: 0,
                 y: 30,
                 duration: 1,
                 ease: 'power3.out',
-                stagger: 0.15
+                stagger: 0.15,
+                clearProps: 'all' // Clean up after animation
             });
 
             gsap.utils.toArray('.section-header').forEach((header) => {
